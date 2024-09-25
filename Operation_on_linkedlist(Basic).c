@@ -4,38 +4,83 @@ struct node
     int data;
     struct node *link;
 };
-struct node * new_element(int element){
+struct node * new_element(int element){  // adding new element
     struct node* temp = NULL;
     temp=(struct node *)malloc(sizeof(struct node));
     temp->data=element;
     temp->link=NULL;
     return temp;
 }
-struct node * traversal(struct node* head){
+struct node * traversal(struct node* head){    // Traversing
     struct node* current=head;
     while(current->link!=NULL){
         current=current->link;
     }
     return current;
 }
-struct node * add_at_pos(struct node *head,int pos){
+struct node * count(struct node* head){    // count
+    int cnt=0;
+    struct node* current=head;
+    while(current->link!=NULL){
+        cnt++;
+        current=current->link;
+    }
+    return (cnt+1);
+}
+struct node * add_at_pos(struct node *head,int pos){//insertion at postion
     int element;
     printf("Enter the no to be inserted : ");
-    scanf("%d",element);
+    scanf("%d",&element);
+    struct node* nxt=head;
     struct node* temp=new_element(element);
+    struct node* new=traversal(head);
     struct node* rot=head;
-    while(rot != NULL){
-        if(rot->data==pos){
-            break;
-        }
-        rot=rot->link;
-    }
-    if (rot == NULL){
+    if (pos==1){    //insertion at beginning
+        temp->link=head;
+        head=temp;
         return head;
     }
-    temp->link=rot->link;
-    rot->link=temp;
+    else if(pos>count(head)){
+        new->link=temp;
+        temp->link=NULL;
+        return head;
+    }
+    else{    //insertion at ending
+        int position = 1;
+        while(position<pos-1){
+            nxt=nxt->link;
+            position++;
+        }
+        temp->link=nxt->link;
+        nxt->link=temp;
+        return head;
+    }
+}
+struct node * add_at_beg(struct node* head){    //insertion at beginning
+    int element;
+    printf("Enter the no to be inserted : ");
+    scanf("%d",&element);
+    struct node* temp=new_element(element);
+    temp->link=head;
+    head=temp;
     return head;
+}
+struct node * add_at_end(struct node * head){    //insertion at ending
+    int element;
+    printf("Enter the no to be inserted : ");
+    scanf("%d",&element);
+    struct node* temp=new_element(element);
+    struct node* new=traversal(head);
+    new->link=temp;
+
+};
+struct node* print_linkedlist(struct node* head){    //printing the linkedlist
+
+    struct node* current=head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->link;
+    }
 }
 int main(){
     int length;
@@ -56,13 +101,20 @@ int main(){
         }
     }
     int pos;
-    printf("Enter the position you want to enter:");
+    /*//insertion of element
+    printf("**Insertion of element**\n");
+    printf("Enter the position you want to enter : ");
     scanf("%d",&pos);
     head=add_at_pos(head,pos);
-    struct node* current = head;
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->link;
-    }
-    printf("\n");
+    //insertion at beginning
+    printf("**Insertion at beginning**\n");
+    head=add_at_beg(head);
+    //insertion at end;
+    printf("**Insertion at end**\n");
+    add_at_end(head);
+    //count
+    printf("Count of element = %d \n",count(head));
+    //print of linked list*/
+    //deletion of element
+    print_linkedlist(head);
 }
