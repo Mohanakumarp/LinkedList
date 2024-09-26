@@ -1,4 +1,5 @@
 # include <stdio.h>
+# include <stdlib.h>
 struct node
 {
     int data;
@@ -18,14 +19,14 @@ struct node * traversal(struct node* head){    // Traversing
     }
     return current;
 }
-struct node * count(struct node* head){    // count
+int count(struct node* head){    // count
     int cnt=0;
     struct node* current=head;
-    while(current->link!=NULL){
+    while(current!=NULL){
         cnt++;
         current=current->link;
     }
-    return (cnt+1);
+    return (cnt);
 }
 struct node * add_at_pos(struct node *head,int pos){//insertion at postion
     int element;
@@ -34,7 +35,6 @@ struct node * add_at_pos(struct node *head,int pos){//insertion at postion
     struct node* nxt=head;
     struct node* temp=new_element(element);
     struct node* new=traversal(head);
-    struct node* rot=head;
     if (pos==1){    //insertion at beginning
         temp->link=head;
         head=temp;
@@ -74,6 +74,29 @@ struct node * add_at_end(struct node * head){    //insertion at ending
     new->link=temp;
 
 };
+struct node * deletion(struct node * head){
+    int element;
+    printf("Enter the no to be deleted : ");
+    scanf("%d",&element);
+    struct node* current = head;
+    struct node* previous = NULL;
+    if (head != NULL && head->data == element) {    // Deletion at beginning
+        head = head->link;
+        free(current);
+        return head;
+    }
+    while (current != NULL && current->data != element) {    // Traverse the list to find the element
+        previous = current;
+        current = current->link;
+    }
+    if (current == NULL) {    // If element was not found
+        printf("Element not found\n");
+        return head;
+    }
+    previous->link = current->link;    // Deletion at position or end
+    free(current);
+    return head;
+}
 struct node* print_linkedlist(struct node* head){    //printing the linkedlist
 
     struct node* current=head;
@@ -112,9 +135,10 @@ int main(){
     //insertion at end;
     printf("**Insertion at end**\n");
     add_at_end(head);
-    //count
+    //count*/
     printf("Count of element = %d \n",count(head));
-    //print of linked list*/
+    //print of linked list
     //deletion of element
+    deletion(head);
     print_linkedlist(head);
 }
